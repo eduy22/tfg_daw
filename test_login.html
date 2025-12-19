@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Test Login</title>
+</head>
+<body>
+  <h1>Prueba de login (Sprint 1)</h1>
+
+  <label>Email: <input id="email" value="carlos@mail.com"></label><br><br>
+  <label>Password: <input id="password" value="1234" type="password"></label><br><br>
+
+  <button id="btn">Login</button>
+
+  <pre id="out"></pre>
+
+  <script>
+    document.getElementById('btn').addEventListener('click', async () => {
+      const payload = {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      };
+
+      const res = await fetch('/ciudad_deportiva/api/auth_login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        credentials: 'include' // importante para la sesión
+      });
+
+      const data = await res.json();
+      document.getElementById('out').textContent =
+        'HTTP ' + res.status + '\n' + JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>
