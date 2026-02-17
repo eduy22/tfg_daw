@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Instalaciones - Ciudad Deportiva</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Ciudad Deportiva</h1>
+    <p>Instalaciones disponibles</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="register.html">Registrarse</a>
+    <a href="login.html">Iniciar sesión</a>
+    <a href="facilities.html">Instalaciones</a>
+  </nav>
+
+  <main>
+    <div class="card" id="userCard" style="display:none;">
+      <h2 id="hello"></h2>
+      <p>Has iniciado sesión correctamente.</p>
+      <br>
+      <button id="logoutBtn">Cerrar sesión</button>
+    </div>
+
+    <div class="card">
+      <h2>Listado de instalaciones</h2>
+
+      <br>
+
+      <label for="filter">Filtrar por tipo:</label><br>
+      <select id="filter" style="width:100%; padding:0.5rem;">
+        <option value="all">Todas</option>
+        <option value="padel">Pádel</option>
+        <option value="tenis">Tenis</option>
+        <option value="natacion">Natación</option>
+      </select>
+
+      <br><br>
+      <div id="status" style="display:none;"></div>
+      <div id="list"></div>
+    </div>
+  </main>
+
+  <footer>
+    Proyecto DAW - Sprint 2
+  </footer>
+
+<script>
+  const listEl = document.getElementById('list');
+  const statusEl = document.getElementById('status');
+  const filterEl = document.getElementById('filter');
+
+  const userCard = document.getElementById('userCard');
+  const hello = document.getElementById('hello');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  function setStatus(text, ok=true) {
+    statusEl.style.display = 'block';
+    statusEl.textContent = text;
+    statusEl.style.padding = '0.6rem';
+    statusEl.style.marginBottom = '1rem';
+    statusEl.style.borderRadius = '6px';
+    statusEl.style.background = ok ? '#dcfce7' : '#fee2e2';
+    statusEl.style.borderLeft = ok ? '6px solid #16a34a' : '6px solid #dc2626';
+  }
+
+  function renderFacilities(items) {
+    listEl.innerHTML = '';
+
+    if (!items.length) {
+      listEl.innerHTML = '<p>No hay instalaciones disponibles.</p>';
+      return;
+    }
+
+    items.forEach(i => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <h3>${i.nombre}</h3>
+        <p><strong>Tipo:</strong> ${i.tipo}</p>
+        <p><strong>Descripción:</strong> ${i.descripcion ?? ''}</p>
+      `;
+      listEl.appendChild(div);
+    });
+  }
+
+  function applyFilter(allItems) {
+    const f = filterEl.value;
+    if (f === 'all') return allItems;
+    return allItems.filter(x => x.tipo === f);
+  }
+
+  // Mostrar usuario si existe en localStorage
+  const stored = localStorage.getItem('cd_user');
+  if (stored) {
+    try {
+      const user = JSON.parse(stored);
+      userCard.style.display = 'block';
+      hello.textContent = `Hola, ${user.nombre}`;
+    } catch (_) { /* ignore */ }
+  }
+
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('cd_user');
+    // (La sesión PHP puede seguir existiendo, pero en Sprint 2 basta UX)
+    window.location.href = 'index.html';
+  });
+
+  // Cargar instalaciones desde backend
+  let facilitiesCache = [];
+
+  async function loadFacilities() {
+    setStatus('Cargando instalaciones...', true);
+
+    try {
+      const res = await fetch('/ciudad_deportiva/api/facilities_list.php', {
+        method: 'GET'
+      });
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        facilitiesCache = data.instalaciones || [];
+        setStatus('Instalaciones cargadas correctamente.', true);
+        renderFacilities(applyFilter(facilitiesCache));
+      } else {
+        setStatus(data.error || 'Error cargando instalaciones.', false);
+      }
+    } catch (err) {
+      setStatus('Error de conexión con el servidor.', false);
+    }
+  }
+
+  filterEl.addEventListener('change', () => {
+    renderFacilities(applyFilter(facilitiesCache));
+  });
+
+  loadFacilities();
+</script>
+
+</body>
+</html>

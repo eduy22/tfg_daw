@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro - Ciudad Deportiva</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Ciudad Deportiva</h1>
+    <p>Registro de usuario</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="register.html">Registrarse</a>
+    <a href="login.html">Iniciar sesión</a>
+    <a href="facilities.html">Instalaciones</a>
+  </nav>
+
+  <main>
+    <div class="card">
+      <h2>Crear cuenta</h2>
+      <p>Introduce tus datos para registrarte.</p>
+      <br>
+
+      <form id="registerForm">
+        <label>Nombre</label><br>
+        <input id="nombre" type="text" required style="width:100%; padding:0.5rem;"><br><br>
+
+        <label>Email</label><br>
+        <input id="email" type="email" required style="width:100%; padding:0.5rem;"><br><br>
+
+        <label>Contraseña</label><br>
+        <input id="password" type="password" required minlength="4" style="width:100%; padding:0.5rem;"><br><br>
+
+        <button id="btnSubmit" type="submit">Registrar</button>
+      </form>
+
+      <br>
+      <div id="msg" class="card" style="display:none;"></div>
+    </div>
+  </main>
+
+  <footer>
+    Proyecto DAW - Sprint 2
+  </footer>
+
+<script>
+  const form = document.getElementById('registerForm');
+  const msg = document.getElementById('msg');
+  const btn = document.getElementById('btnSubmit');
+
+  function showMessage(text, ok=true) {
+    msg.style.display = 'block';
+    msg.textContent = text;
+    msg.style.borderLeft = ok ? '6px solid #16a34a' : '6px solid #dc2626';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const nombre = document.getElementById('nombre').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    // Validación mínima frontend
+    if (!nombre || !email || !password) {
+      showMessage('Rellena todos los campos.', false);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Registrando...';
+    msg.style.display = 'none';
+
+    try {
+      const res = await fetch('/ciudad_deportiva/api/auth_register.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, email, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        showMessage('Registro completado. Ya puedes iniciar sesión.', true);
+        form.reset();
+      } else {
+        // Ejemplos: 409 email duplicado, 400 faltan campos
+        showMessage(data.error || 'Error en el registro.', false);
+      }
+    } catch (err) {
+      showMessage('Error de conexión con el servidor.', false);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Registrar';
+    }
+  });
+</script>
+
+</body>
+</html>
