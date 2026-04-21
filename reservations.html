@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reservar instalación - Ciudad Deportiva</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Ciudad Deportiva</h1>
+    <p>Reserva de instalaciones</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="register.html">Registrarse</a>
+    <a href="login.html">Iniciar sesión</a>
+    <a href="facilities.html">Instalaciones</a>
+    <a href="reservations.html">Reservar</a>
+    <a href="my_reservations.html">Mis reservas</a>
+  </nav>
+
+  <main>
+    <div class="card" id="userCard" style="display:none;">
+      <h2 id="hello"></h2>
+      <p>Selecciona una instalación, fecha y hora para realizar la reserva.</p>
+    </div>
+
+    <div class="card">
+      <h2>Nueva reserva</h2>
+      <form id="reservationForm">
+        <label for="id_instalacion">Instalación</label><br>
+        <select id="id_instalacion" required style="width:100%; padding:0.5rem;">
+          <option value="">Cargando instalaciones...</option>
+        </select><br><br>
+
+        <label for="fecha">Fecha</label><br>
+        <input id="fecha" type="date" required style="width:100%; padding:0.5rem;"><br><br>
+
+        <label for="hora_inicio">Hora de inicio</label><br>
+        <input id="hora_inicio" type="time" required style="width:100%; padding:0.5rem;"><br><br>
+
+        <button id="btnSubmit" type="submit">Reservar</button>
+      </form>
+
+      <br>
+      <div id="status" style="display:none;"></div>
+    </div>
+  </main>
+
+  <footer>
+    Proyecto DAW - Sprint 3
+  </footer>
+
+<script>
+  const userCard = document.getElementById('userCard');
+  const hello = document.getElementById('hello');
+
+  const form = document.getElementById('reservationForm');
+  const selectInst = document.getElementById('id_instalacion');
+  const fechaInput = document.getElementById('fecha');
+  const horaInput = document.getElementById('hora_inicio');
+  const btn = document.getElementById('btnSubmit');
+  const statusEl = document.getElementById('status');
+
+  function setStatus(text, ok = true) {
+    statusEl.style.display = 'block';
+    statusEl.textContent = text;
+    statusEl.style.padding = '0.6rem';
+    statusEl.style.marginTop = '1rem';
+    statusEl.style.borderRadius = '6px';
+    statusEl.style.background = ok ? '#dcfce7' : '#fee2e2';
+    statusEl.style.borderLeft = ok ? '6px solid #16a34a' : '6px solid #dc2626';
+  }
+
+  // Mostrar saludo si hay usuario guardado
+  const stored = localStorage.getItem('cd_user');
+  if (stored) {
+    try {
+      const user = JSON.parse(stored);
+      userCard.style.display = 'block';
+      hello.textContent = `Hola, ${user.nombre}`;
+    } catch (_) {}
+  }
+
+  // Fecha mínima = hoy
+  const today = new Date().toISOString().split('T')[0];
+  fechaInput.min = today;
+
+  // Cargar instalaciones
+  async function loadFacilities() {
+    try {
+      const res = await fetch('/ciudad_deportiva/api/facilities_list.php');
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        selectInst.innerHTML = '<option value="">Selecciona una instalación</option>';
+
+        data.instalaciones.forEach(inst => {
+          const option = document.createElement('option');
+          option.value = inst.id_instalacion;
+          option.textContent = `${inst.nombre} (${inst.tipo})`;
+          selectInst.appendChild(option);
+        });
+      } else {
+        selectInst.innerHTML = '<option value="">Error al cargar instalaciones</option>';
+      }
+    } catch (err) {
+      selectInst.innerHTML = '<option value="">Error de conexión</option>';
+    }
+  }
+
+  // Enviar reserva
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const id_instalacion = Number(selectInst.value);
+    const fecha = fechaInput.value;
+    const hora_inicio = horaInput.value;
+
+    if (!id_instalacion || !fecha || !hora_inicio) {
+      setStatus('Debes completar todos los campos.', false);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Reservando...';
+    statusEl.style.display = 'none';
+
+    try {
+      const res = await fetch('/ciudad_deportiva/api/reservations_create.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ id_instalacion, fecha, hora_inicio })
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        setStatus('Reserva creada correctamente.', true);
+        form.reset();
+      } else {
+        setStatus(data.error || 'Error al crear la reserva.', false);
+      }
+    } catch (err) {
+      setStatus('Error de conexión con el servidor.', false);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Reservar';
+    }
+  });
+
+  loadFacilities();
+</script>
+
+</body>
+</html>

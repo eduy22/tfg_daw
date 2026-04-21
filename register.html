@@ -17,6 +17,8 @@
     <a href="register.html">Registrarse</a>
     <a href="login.html">Iniciar sesión</a>
     <a href="facilities.html">Instalaciones</a>
+    <a href="reservations.html">Reservar</a>
+    <a href="my_reservations.html">Mis reservas</a>
   </nav>
 
   <main>
@@ -65,7 +67,7 @@
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
 
-    // Validación mínima frontend
+    // Validación frontend
     if (!nombre || !email || !password) {
       showMessage('Rellena todos los campos.', false);
       return;
