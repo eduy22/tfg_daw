@@ -1,76 +1,310 @@
-/* Reset básico */
+/* =========================
+   RESET Y ESTILO GLOBAL
+========================= */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
 }
 
 body {
-  background-color: #f4f6f9;
-  color: #333;
+  background: linear-gradient(180deg, #f3f6fb 0%, #eef2f7 100%);
+  color: #1f2937;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+/* =========================
+   CABECERA CON IMAGEN
+========================= */
 header {
-  background-color: #1e3a8a;
+  background:
+    linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.65)),
+    url("https://images.unsplash.com/photo-1502904550040-7534597429ae?q=80&w=2000&auto=format&fit=crop");
+  background-size: cover;
+  background-position: center;
   color: white;
-  padding: 1rem;
   text-align: center;
+  padding: 3rem 1rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
 }
 
+header h1 {
+  font-size: 2.4rem;
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.5px;
+}
+
+header p {
+  font-size: 1.05rem;
+  max-width: 700px;
+  margin: 0 auto;
+  opacity: 0.95;
+}
+
+/* =========================
+   NAVEGACIÓN
+========================= */
 nav {
-  background-color: #2563eb;
-  padding: 0.5rem;
+  background-color: #0f172a;
   text-align: center;
+  padding: 0.95rem 1rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
 }
 
 nav a {
-  color: white;
+  display: inline-block;
+  color: #f8fafc;
   text-decoration: none;
-  margin: 0 1rem;
-  font-weight: bold;
+  margin: 0.3rem 0.85rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 nav a:hover {
-  text-decoration: underline;
+  color: #60a5fa;
+  transform: translateY(-1px);
 }
 
+/* =========================
+   CONTENIDO PRINCIPAL
+========================= */
 main {
   flex: 1;
-  padding: 2rem;
-  max-width: 900px;
-  margin: auto;
+  width: 100%;
+  max-width: 1050px;
+  margin: 2rem auto;
+  padding: 0 1.2rem;
 }
 
+/* =========================
+   TARJETAS
+========================= */
 .card {
-  background-color: white;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
   padding: 1.5rem;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 1.3rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+}
+
+.card h2 {
+  color: #0f172a;
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.card h3 {
+  color: #1d4ed8;
+  font-size: 1.2rem;
+  margin-bottom: 0.6rem;
+}
+
+.card p {
+  color: #374151;
+  line-height: 1.65;
+}
+
+.card ul {
+  margin-left: 1.2rem;
+  margin-top: 0.8rem;
+}
+
+.card li {
+  margin-bottom: 0.45rem;
+}
+
+/* =========================
+   FORMULARIOS
+========================= */
+label {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  color: #111827;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+/* =========================
+   BOTONES
+========================= */
 button {
-  background-color: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: white;
   border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 5px;
+  border-radius: 12px;
+  padding: 0.78rem 1.25rem;
+  font-size: 0.98rem;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 1rem;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
 button:hover {
-  background-color: #1e40af;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.28);
 }
 
-footer {
-  background-color: #1e3a8a;
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Botón de cancelar reserva */
+.cancel-btn {
+  margin-top: 0.9rem;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  box-shadow: 0 8px 18px rgba(220, 38, 38, 0.22);
+}
+
+.cancel-btn:hover {
+  box-shadow: 0 10px 20px rgba(220, 38, 38, 0.28);
+}
+
+/* =========================
+   MENSAJES Y ESTADOS
+========================= */
+#msg,
+#status {
+  border-radius: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* =========================
+   ESTADOS DE RESERVAS
+========================= */
+.reserva-activa {
+  border-left: 6px solid #16a34a;
+}
+
+.reserva-cancelada {
+  border-left: 6px solid #9ca3af;
+  opacity: 0.92;
+}
+
+/* =========================
+   HERO/PORTADA (index)
+========================= */
+.hero-box {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.hero-box h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #0f172a;
+}
+
+.hero-box p {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  color: #374151;
+}
+
+.hero-actions {
+  margin-top: 1.5rem;
+}
+
+.hero-actions a {
+  display: inline-block;
+  text-decoration: none;
+  margin: 0.4rem;
+  padding: 0.85rem 1.2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+.hero-primary {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: white;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+}
+
+.hero-secondary {
+  background: white;
+  color: #1d4ed8;
+  border: 1px solid #cbd5e1;
+}
+
+.hero-actions a:hover {
+  transform: translateY(-1px);
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+  background-color: #0f172a;
+  color: #e5e7eb;
   text-align: center;
   padding: 1rem;
   font-size: 0.9rem;
+  margin-top: auto;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  header {
+    padding: 2.2rem 1rem;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+
+  nav a {
+    margin: 0.3rem 0.45rem;
+    font-size: 0.9rem;
+  }
+
+  main {
+    margin: 1.3rem auto;
+    padding: 0 0.9rem;
+  }
+
+  .card {
+    padding: 1.15rem;
+    border-radius: 16px;
+  }
+
+  .hero-box h2 {
+    font-size: 1.6rem;
+  }
 }

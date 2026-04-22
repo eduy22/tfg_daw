@@ -43,7 +43,7 @@ function renderReservations(items) {
 
   items.forEach(r => {
     const div = document.createElement('div');
-    div.className = 'card';
+    div.className = 'card ' + (r.estado === 'activa' ? 'reserva-activa' : 'reserva-cancelada');
 
     // Solo se muestra el botón si la reserva sigue activa
     let cancelButton = '';
