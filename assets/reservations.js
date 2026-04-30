@@ -74,6 +74,15 @@ async function loadFacilities() {
         option.textContent = `${inst.nombre} (${inst.tipo})`;
         selectInst.appendChild(option);
       });
+
+    // Leer parámetro de la URL (id_instalacion)
+    const params = new URLSearchParams(window.location.search);
+    const selectedId = params.get('id_instalacion');
+
+    // Si existe, seleccionar esa instalación en el desplegable
+    if (selectedId) {
+    selectInst.value = selectedId;
+    }
     } else {
       selectInst.innerHTML = '<option value="">Error al cargar instalaciones</option>';
     }

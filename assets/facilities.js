@@ -53,6 +53,10 @@ function renderFacilities(items) {
         <span class="badge badge-info">${i.tipo}</span>
       </p>
       <p><strong>Descripción:</strong> ${i.descripcion ?? ''}</p>
+      <br>
+      <a class="action-link" href="reservations.html?id_instalacion=${i.id_instalacion}">
+        Reservar
+      </a>
     `;
     listEl.appendChild(div);
   });

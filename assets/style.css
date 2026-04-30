@@ -229,6 +229,23 @@ a.hero-secondary {
   min-width: 150px;
   text-align: center;
 }
+
+.action-link {
+  display: inline-block;
+  text-decoration: none;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.action-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.28);
+}
 /* =========================
    MENSAJES Y ESTADOS
 ========================= */

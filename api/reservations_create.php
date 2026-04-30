@@ -54,6 +54,21 @@ if ($id_instalacion <= 0 || $fecha === '' || $hora_inicio === '') {
   ], 400);
 }
 
+/*
+  Validar el horario elegido por el usuario
+*/
+$horariosPermitidos = [
+  '10:00', '11:00', '12:00', '13:00', '14:00',
+  '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'
+];
+
+if (!in_array($hora_inicio, $horariosPermitidos, true)) {
+  json_response([
+    'ok' => false,
+    'error' => 'Horario no válido. Selecciona una hora disponible.'
+  ], 400);
+}
+
 try {
   // Conexión a la base de datos
   $pdo = db();
