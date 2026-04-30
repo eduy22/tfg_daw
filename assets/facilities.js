@@ -48,7 +48,10 @@ function renderFacilities(items) {
     div.className = 'card';
     div.innerHTML = `
       <h3>${i.nombre}</h3>
-      <p><strong>Tipo:</strong> ${i.tipo}</p>
+      <p>
+        <strong>Tipo:</strong>
+        <span class="badge badge-info">${i.tipo}</span>
+      </p>
       <p><strong>Descripción:</strong> ${i.descripcion ?? ''}</p>
     `;
     listEl.appendChild(div);

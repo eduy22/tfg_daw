@@ -53,10 +53,18 @@ function renderReservations(items) {
 
     div.innerHTML = `
       <h3>${r.instalacion}</h3>
-      <p><strong>Tipo:</strong> ${r.tipo}</p>
+      <p>
+        <strong>Tipo:</strong>
+        <span class="badge badge-info">${r.tipo}</span>
+      </p>
       <p><strong>Fecha:</strong> ${r.fecha}</p>
       <p><strong>Hora:</strong> ${r.hora_inicio}</p>
-      <p><strong>Estado:</strong> ${r.estado}</p>
+      <p>
+        <strong>Estado:</strong>
+        <span class="badge ${r.estado === 'activa' ? 'badge-success' : 'badge-muted'}">
+          ${r.estado}
+        </span>
+      </p>
       ${cancelButton}
     `;
 

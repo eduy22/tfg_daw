@@ -48,24 +48,30 @@ header p {
    NAVEGACIÓN
 ========================= */
 nav {
-  background-color: #0f172a;
+  background: rgba(15, 23, 42, 0.96);
   text-align: center;
-  padding: 0.95rem 1rem;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  padding: 0.7rem 1rem;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.18);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 nav a {
   display: inline-block;
-  color: #f8fafc;
+  color: #e5e7eb;
   text-decoration: none;
-  margin: 0.3rem 0.85rem;
+  margin: 0.25rem 0.35rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
   font-weight: 600;
-  font-size: 0.95rem;
-  transition: color 0.2s ease, transform 0.2s ease;
+  font-size: 0.93rem;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 nav a:hover {
-  color: #60a5fa;
+  background-color: rgba(96, 165, 250, 0.18);
+  color: #ffffff;
   transform: translateY(-1px);
 }
 
@@ -124,6 +130,25 @@ main {
   margin-bottom: 0.45rem;
 }
 
+.card h3::before {
+  content: "●";
+  color: #2563eb;
+  margin-right: 0.45rem;
+}
+
+.reserva-cancelada h3::before {
+  color: #9ca3af;
+}
+
+.card h3::before {
+  content: "●";
+  color: #2563eb;
+  margin-right: 0.45rem;
+}
+
+.reserva-cancelada h3::before {
+  color: #9ca3af;
+}
 /* =========================
    FORMULARIOS
 ========================= */
@@ -154,6 +179,13 @@ select:focus {
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
+form {
+  margin-top: 1rem;
+}
+
+form br {
+  line-height: 1.2;
+}
 /* =========================
    BOTONES
 ========================= */
@@ -192,6 +224,11 @@ button:disabled {
   box-shadow: 0 10px 20px rgba(220, 38, 38, 0.28);
 }
 
+a.hero-primary,
+a.hero-secondary {
+  min-width: 150px;
+  text-align: center;
+}
 /* =========================
    MENSAJES Y ESTADOS
 ========================= */
@@ -214,6 +251,34 @@ button:disabled {
   opacity: 0.92;
 }
 
+/* =========================
+   BADGES RESERVAS
+========================= */
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.badge-success {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.badge-muted {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.badge-info {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
 /* =========================
    HERO/PORTADA (index)
 ========================= */
